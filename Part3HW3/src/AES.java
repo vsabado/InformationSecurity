@@ -39,17 +39,14 @@ public class AES {
         return null;
     }
 
-    public static void encryptCmd() {
-        System.out.println("What's your message?");
-        Scanner scan = new Scanner(System.in);
-        String m = scan.nextLine();
+    public static void encryptCmd(String m) {
         System.out.println("Message to encrypt: " + m);
         String encryptedString = encrypt(m);
         System.out.println("Encryption complete");
 
         PrintStream ps = null;
         try {
-            ps = new PrintStream("output/ctext.txt");
+            ps = new PrintStream("outputAES/ctext.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -59,7 +56,7 @@ public class AES {
     private static void decryptCmd() {
 
         try {
-            File fileDir = new File("output/ctext.txt");
+            File fileDir = new File("outputAES/ctext.txt");
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
@@ -97,16 +94,16 @@ public class AES {
             long start = 0;
             long finish = 0;
             switch (c) {
-                case 'e':
+                case 'E':
                     start = System.nanoTime();
                     for (int i = 0; i < 100; i++) {
                         String confirm = encrypt(m);
                     }
                     finish = System.nanoTime();
                     System.out.println("100 encryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + ((finish - start) / 1000000)/100);
+                    System.out.println("Average in ms: " + ((finish - start) / 1000000) / 100);
                     break;
-                case 'd':
+                case 'D':
                     start = System.nanoTime();
                     String messageDec = encrypt(m);
                     for (int i = 0; i < 100; i++) {
@@ -114,7 +111,13 @@ public class AES {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 decryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + ((finish - start) / 1000000)/100);
+                    System.out.println("Average in ms: " + ((finish - start) / 1000000) / 100);
+                    break;
+                case 'e':
+                    encryptCmd(m);
+                    break;
+                case 'd':
+                    decryptCmd();
                     break;
                 case 'q':
                     loop = false;

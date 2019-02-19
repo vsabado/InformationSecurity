@@ -25,21 +25,18 @@ public class RSA2048 {
         return cip.doFinal(encrypted);
     }
 
-    public static void encryptCmd(PublicKey pubKey) throws Exception {
-        System.out.println("What's your message?");
-        Scanner scan = new Scanner(System.in);
-        String m = scan.nextLine();
+    public static void encryptCmd(PublicKey pubKey, String m) throws Exception {
         System.out.println("Message to encrypt: " + m);
         System.out.println("Encryption complete");
         byte[] p = encrypt(pubKey, m);
 
-        FileOutputStream fos = new FileOutputStream("output/ctext.txt");
+        FileOutputStream fos = new FileOutputStream("outputRSA/ctext.txt");
         fos.write(p);
         fos.close();
     }
 
     private static void decryptCmd(PrivateKey privKey) throws Exception {
-        byte[] m = Files.readAllBytes(new File("output/ctext.txt").toPath());
+        byte[] m = Files.readAllBytes(new File("outputRSA/ctext.txt").toPath());
         byte[] verified = decrypt(privKey, m);
         System.out.println("Decrypting message");
         System.out.println("Message decrypted: " + new String(verified));
@@ -70,16 +67,16 @@ public class RSA2048 {
             long finish = 0;
             byte[] confirm = new byte[0];
             switch (c) {
-                case 'e':
+                case 'E':
                     start = System.nanoTime();
                     for (int i = 0; i < 100; i++) {
                         confirm = encrypt(pubKey, m);
                     }
                     finish = System.nanoTime();
                     System.out.println("100 encryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + ((finish - start) / 1000000)/100);
+                    System.out.println("Average in ms: " + ((finish - start) / 1000000) / 100);
                     break;
-                case 'd':
+                case 'D':
                     confirm = encrypt(pubKey, m);
                     start = System.nanoTime();
                     for (int i = 0; i < 100; i++) {
@@ -87,7 +84,13 @@ public class RSA2048 {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 encryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + ((finish - start) / 1000000)/100);
+                    System.out.println("Average in ms: " + ((finish - start) / 1000000) / 100);
+                    break;
+                case 'e':
+                    encryptCmd(pubKey, m);
+                    break;
+                case 'd':
+                    decryptCmd(privKey);
                     break;
                 case 'q':
                     loop = false;
