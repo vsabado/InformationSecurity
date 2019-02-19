@@ -45,6 +45,7 @@ public class AESED {
         String m = scan.nextLine();
         System.out.println("Message to encrypt: " + m);
         String encryptedString = encrypt(m);
+        System.out.println("Encryption complete");
 
         PrintStream ps = null;
         try {
@@ -63,11 +64,9 @@ public class AESED {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
                             new FileInputStream(fileDir), StandardCharsets.UTF_8));
-
             String str;
-
             while ((str = in.readLine()) != null) {
-                System.out.println("After decryption - " + decrypt(str));
+                System.out.println("Messsage decrypted: " + decrypt(str));
             }
             in.close();
         } catch (UnsupportedEncodingException e) {
@@ -86,7 +85,7 @@ public class AESED {
             System.out.println("Would you like to encrypt or decrypt? e to encrypt, d to decrypt, q to quit");
             char c = reader.next(".").charAt(0);
             while (c != 'e' && c != 'd' && c != 'q') {
-                System.out.println("Invalid, please input a valid command");
+                System.out.println("Invalid, please input a valid command: e, d, q");
                 c = reader.next(".").charAt(0);
             }
 
