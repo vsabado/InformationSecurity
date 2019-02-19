@@ -30,7 +30,7 @@ public class RSA2048 {
         Scanner scan = new Scanner(System.in);
         String m = scan.nextLine();
         System.out.println("Message to encrypt: " + m);
-        System.out.println("Encryption finished");
+        System.out.println("Encryption complete");
         byte[] p = encrypt(pubKey, m);
 
         FileOutputStream fos = new FileOutputStream("output/ctext.txt");
