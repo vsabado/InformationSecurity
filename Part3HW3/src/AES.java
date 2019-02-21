@@ -79,11 +79,12 @@ public class AES {
         System.out.println("What's your message?");
         Scanner scan = new Scanner(System.in);
         String m = scan.nextLine();
-        boolean loop = true;
 
+        //User interactions
+        boolean loop = true;
         while (loop) {
             Scanner reader = new Scanner(System.in);
-            System.out.println("///////////////////////////////////////////////////////////////////////////");
+            System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
             System.out.println("Would you like to encrypt or decrypt? e to encrypt, d to decrypt, q to quit, E for encrypt runtime, D for decrypt runtime");
             char c = reader.next(".").charAt(0);
             while (c != 'e' && c != 'd' && c != 'q' && c != 'E' && c != 'D') {

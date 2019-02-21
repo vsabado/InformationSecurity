@@ -30,13 +30,13 @@ public class RSA2048 {
         System.out.println("Encryption complete");
         byte[] p = encrypt(pubKey, m);
 
-        FileOutputStream fos = new FileOutputStream("outputRSA/ctext.txt");
+        FileOutputStream fos = new FileOutputStream("outputRSA/ctext.txt"); //create an outputRSA folder!
         fos.write(p);
         fos.close();
     }
 
     private static void decryptCmd(PrivateKey privKey) throws Exception {
-        byte[] m = Files.readAllBytes(new File("outputRSA/ctext.txt").toPath());
+        byte[] m = Files.readAllBytes(new File("outputRSA/ctext.txt").toPath());//create an outputRSA folder!
         byte[] verified = decrypt(privKey, m);
         System.out.println("Decrypting message");
         System.out.println("Message decrypted: " + new String(verified));
@@ -52,10 +52,11 @@ public class RSA2048 {
         Scanner scan = new Scanner(System.in);
         String m = scan.nextLine();
 
+        //User interactions
         boolean loop = true;
         while (loop) {
             Scanner reader = new Scanner(System.in);
-            System.out.println("///////////////////////////////////////////////////////////////////////////");
+            System.out.println("////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
             System.out.println("Would you like to encrypt or decrypt? e to encrypt, d to decrypt, q to quit, E for encrypt runtime, D for decrypt runtime");
             char c = reader.next(".").charAt(0);
             while (c != 'e' && c != 'd' && c != 'q' && c != 'E' && c != 'D') {
@@ -83,7 +84,7 @@ public class RSA2048 {
                         byte[] test = decrypt(privKey, confirm);
                     }
                     finish = System.nanoTime();
-                    System.out.println("100 encryptions in ms: " + ((finish - start) / 1000000));
+                    System.out.println("100 decryptions in ms: " + ((finish - start) / 1000000));
                     System.out.println("Average in ms: " + ((finish - start) / 1000000) / 100);
                     break;
                 case 'e':
