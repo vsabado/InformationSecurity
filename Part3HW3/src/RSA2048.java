@@ -59,6 +59,7 @@ public class RSA2048 {
         boolean loop = true;
         while (loop) {
             Scanner reader = new Scanner(System.in);
+            System.out.println();
             System.out.println("==========================================================================================================================");
             System.out.println("Would you like to encrypt or decrypt? e to encrypt, d to decrypt, q to quit, E for encrypt runtime, D for decrypt runtime");
             char c = reader.next(".").charAt(0);
