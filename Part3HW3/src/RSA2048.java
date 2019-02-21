@@ -43,6 +43,7 @@ public class RSA2048 {
     }
 
     public static void main(String[] args) throws Exception {
+        System.out.println("Running RSA2048");
         // generate public and private keys
         KeyPair keyPair = makeKeyPair();
         PublicKey pubKey = keyPair.getPublic();
@@ -56,7 +57,7 @@ public class RSA2048 {
         boolean loop = true;
         while (loop) {
             Scanner reader = new Scanner(System.in);
-            System.out.println("////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
+            System.out.println("==========================================================================================================================");
             System.out.println("Would you like to encrypt or decrypt? e to encrypt, d to decrypt, q to quit, E for encrypt runtime, D for decrypt runtime");
             char c = reader.next(".").charAt(0);
             while (c != 'e' && c != 'd' && c != 'q' && c != 'E' && c != 'D') {

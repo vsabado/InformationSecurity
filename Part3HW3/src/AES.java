@@ -13,8 +13,8 @@ public class AES {
 
     public static String encrypt(String string) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
+            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8));
+            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
             return Base64.getEncoder().encodeToString(cipher.doFinal(string.getBytes()));
@@ -76,6 +76,7 @@ public class AES {
     }
 
     public static void main(String[] args) {
+        System.out.println("Running AES");
         System.out.println("What's your message?");
         Scanner scan = new Scanner(System.in);
         String m = scan.nextLine();
@@ -84,7 +85,7 @@ public class AES {
         boolean loop = true;
         while (loop) {
             Scanner reader = new Scanner(System.in);
-            System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
+            System.out.println("==========================================================================================================================");
             System.out.println("Would you like to encrypt or decrypt? e to encrypt, d to decrypt, q to quit, E for encrypt runtime, D for decrypt runtime");
             char c = reader.next(".").charAt(0);
             while (c != 'e' && c != 'd' && c != 'q' && c != 'E' && c != 'D') {

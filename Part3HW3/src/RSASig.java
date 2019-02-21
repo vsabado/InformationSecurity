@@ -10,7 +10,7 @@ public class RSASig {
     public static String encrypt(String message, PublicKey pubKey) throws Exception {
         Cipher encrypt = Cipher.getInstance("RSA");
         encrypt.init(Cipher.ENCRYPT_MODE, pubKey);
-        byte[] text = encrypt.doFinal(message.getBytes("UTF-8"));
+        byte[] text = encrypt.doFinal(message.getBytes(StandardCharsets.UTF_8));
         return Base64.getEncoder().encodeToString(text);
     }
 
@@ -18,13 +18,13 @@ public class RSASig {
         byte[] text = Base64.getDecoder().decode(message);
         Cipher decrypt = Cipher.getInstance("RSA");
         decrypt.init(Cipher.DECRYPT_MODE, privKey);
-        return new String(decrypt.doFinal(text), "UTF-8");
+        return new String(decrypt.doFinal(text), StandardCharsets.UTF_8);
     }
 
     public static String sign(String message, PrivateKey privKey) throws Exception {
         Signature sig = Signature.getInstance("SHA256withRSA");
         sig.initSign(privKey);
-        sig.update(message.getBytes("UTF-8"));
+        sig.update(message.getBytes(StandardCharsets.UTF_8));
         byte[] sign = sig.sign();
         return Base64.getEncoder().encodeToString(sign);
     }
@@ -65,6 +65,7 @@ public class RSASig {
     }
 
     public static void main(String[] args) throws Exception {
+        System.out.println("Running RSASig");
         KeyPairGenerator keys = KeyPairGenerator.getInstance("RSA");
         keys.initialize(2048, new SecureRandom());
         KeyPair pair = keys.generateKeyPair();
@@ -79,7 +80,7 @@ public class RSASig {
         boolean loop = true;
         while (loop) {
             Scanner reader = new Scanner(System.in);
-            System.out.println("//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
+            System.out.println("==========================================================================================================================");
             System.out.println("Would you like to encrypt or decrypt? e to encrypt, d to decrypt, q to quit, E for encrypt runtime, D for decrypt runtime");
             char c = reader.next(".").charAt(0);
             while (c != 'e' && c != 'd' && c != 'q' && c != 'E' && c != 'D') {
