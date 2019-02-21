@@ -29,6 +29,7 @@ public class HMAC {
         return new SecretKeySpec(Files.readAllBytes(Paths.get("outputHMACKey/key")), "HMACSHA256");
     }
 
+
     public static byte[] generateMessage(SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac mac = Mac.getInstance("HMACSHA256");
         mac.init(key);

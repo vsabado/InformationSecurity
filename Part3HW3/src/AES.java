@@ -10,6 +10,7 @@ public class AES {
     public static String encrypt(String string) {
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            //I have created the secret key k within this call (aesEncryptionKey)
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec("aesEncryptionKey".getBytes(StandardCharsets.UTF_8), "AES"), new IvParameterSpec("encryptionIntVec".getBytes(StandardCharsets.UTF_8)));
             return Base64.getEncoder().encodeToString(cipher.doFinal(string.getBytes()));
         } catch (Exception e) {
@@ -96,7 +97,7 @@ public class AES {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 encryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
+                    System.out.println("Average in ms: " + (float) ((finish - start) / 1000000) / 100);
                     break;
                 case 'D':
                     start = System.nanoTime();
@@ -106,7 +107,7 @@ public class AES {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 decryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
+                    System.out.println("Average in ms: " + (float) ((finish - start) / 1000000) / 100);
                     break;
                 case 'e':
                     encryptCmd(m);
