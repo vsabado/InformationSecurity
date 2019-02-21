@@ -7,14 +7,10 @@ import java.util.Base64;
 import java.util.Scanner;
 
 public class AES {
-
-    private static final String key = "aesEncryptionKey";
-    private static final String initVector = "encryptionIntVec";
-
     public static String encrypt(String string) {
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES"), new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8)));
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec("aesEncryptionKey".getBytes(StandardCharsets.UTF_8), "AES"), new IvParameterSpec("encryptionIntVec".getBytes(StandardCharsets.UTF_8)));
             return Base64.getEncoder().encodeToString(cipher.doFinal(string.getBytes()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -25,7 +21,7 @@ public class AES {
     public static String decrypt(String encryptedMessage) {
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES"), new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8)));
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec("aesEncryptionKey".getBytes(StandardCharsets.UTF_8), "AES"), new IvParameterSpec("encryptionIntVec".getBytes(StandardCharsets.UTF_8)));
             return new String(cipher.doFinal(Base64.getDecoder().decode(encryptedMessage)));
         } catch (Exception e) {
             e.printStackTrace();
