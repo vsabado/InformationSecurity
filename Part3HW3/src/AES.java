@@ -7,7 +7,7 @@ import java.util.Base64;
 import java.util.Scanner;
 
 public class AES {
-    public static String encrypt(String string) {
+    private static String encrypt(String string) {
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             //Created the secret key k within this call (aesEncryptionKey)
@@ -19,7 +19,7 @@ public class AES {
         return null;
     }
 
-    public static String decrypt(String encryptedMessage) {
+    private static String decrypt(String encryptedMessage) {
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec("aesEncryptionKey".getBytes(StandardCharsets.UTF_8), "AES"), new IvParameterSpec("encryptionIntVec".getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public class AES {
         return null;
     }
 
-    public static void encryptCmd(String m) {
+    private static void encryptCmd(String m) {
         System.out.println("Message to encrypt: " + m);
         String encryptedString = encrypt(m);
         System.out.println("Encryption complete: " + encryptedString);
@@ -58,10 +58,6 @@ public class AES {
                 System.out.println("Messsage decrypted: " + decrypt(str));
             }
             in.close();
-        } catch (UnsupportedEncodingException e) {
-            System.out.println(e.getMessage());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

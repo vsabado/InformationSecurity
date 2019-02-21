@@ -10,7 +10,7 @@ import java.util.*;
 import javax.crypto.Cipher;
 
 public class RSASig {
-    public static void makeStoreKeys() throws IOException, NoSuchAlgorithmException {
+    private static void makeStoreKeys() throws IOException, NoSuchAlgorithmException {
         KeyPairGenerator keys = KeyPairGenerator.getInstance("RSA");
         keys.initialize(2048, new SecureRandom());
         KeyPair pair = keys.generateKeyPair();
@@ -19,14 +19,14 @@ public class RSASig {
         System.out.println("Created and stored a public and a private key");
     }
 
-    public static PrivateKey restorePrivate() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    private static PrivateKey restorePrivate() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] bytes = Files.readAllBytes(Paths.get("outputRSASig/privkey.key"));
         PKCS8EncodedKeySpec k = new PKCS8EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePrivate(k);
     }
 
-    public static PublicKey restorePublic() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+    private static PublicKey restorePublic() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
         byte[] bytes = Files.readAllBytes(Paths.get("outputRSASig/pubkey.pub"));
         X509EncodedKeySpec k = new X509EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
@@ -34,7 +34,7 @@ public class RSASig {
     }
 
 
-    public static String encrypt(String message) throws Exception {
+    private static String encrypt(String message) throws Exception {
         PublicKey pubKey = restorePublic();
         Cipher encrypt = Cipher.getInstance("RSA");
         encrypt.init(Cipher.ENCRYPT_MODE, pubKey);
@@ -42,7 +42,7 @@ public class RSASig {
         return Base64.getEncoder().encodeToString(text);
     }
 
-    public static String decrypt(String message) throws Exception {
+    private static String decrypt(String message) throws Exception {
         PrivateKey privKey = restorePrivate();
         byte[] text = Base64.getDecoder().decode(message);
         Cipher decrypt = Cipher.getInstance("RSA");
@@ -50,7 +50,7 @@ public class RSASig {
         return new String(decrypt.doFinal(text), StandardCharsets.UTF_8);
     }
 
-    public static String sign(String message) throws Exception {
+    private static String sign(String message) throws Exception {
         PrivateKey privKey = restorePrivate();
         Signature sig = Signature.getInstance("SHA256withRSA");
         sig.initSign(privKey);
@@ -59,7 +59,7 @@ public class RSASig {
         return Base64.getEncoder().encodeToString(sign);
     }
 
-    public static boolean verify(String message, String sig) throws Exception {
+    private static boolean verify(String message, String sig) throws Exception {
         PublicKey pubKey = restorePublic();
         Signature pubsig = Signature.getInstance("SHA256withRSA");
         pubsig.initVerify(pubKey);
@@ -68,7 +68,7 @@ public class RSASig {
         return pubsig.verify(signiture);
     }
 
-    public static void encryptCmd(String m) throws Exception {
+    private static void encryptCmd(String m) throws Exception {
         PublicKey pubKey = restorePublic();
         PrivateKey privKey = restorePrivate();
         System.out.println("Message to encrypt: " + m);

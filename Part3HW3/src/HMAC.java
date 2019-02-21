@@ -12,33 +12,31 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class HMAC {
 
-    public static SecretKey genKey(String algorithm) throws NoSuchAlgorithmException {
+    private static SecretKey genKey(String algorithm) throws NoSuchAlgorithmException {
         return KeyGenerator.getInstance(algorithm).generateKey();
     }
 
-    public static void storeKey(SecretKey key) throws IOException {
+    private static void storeKey(SecretKey key) throws IOException {
         new FileOutputStream("outputHMACKey/key").write(key.getEncoded());
     }
 
-    public static SecretKey restoreKey() throws IOException {
+    private static SecretKey restoreKey() throws IOException {
         return new SecretKeySpec(Files.readAllBytes(Paths.get("outputHMACKey/key")), "HMACSHA256");
     }
 
-    public static byte[] generateMessage(SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException {
+    private static byte[] generateMessage(SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac m = Mac.getInstance("HMACSHA256");
         m.init(key);
         byte[] mb = new byte[0];
         try (FileInputStream in = new FileInputStream("outputHMACKey/m")) {
             mb = process(m, in);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return mb;
     }
 
-    static private final byte[] process(Mac m, InputStream in)
+    static private byte[] process(Mac m, InputStream in)
             throws java.io.IOException {
         byte[] i = new byte[1024];
         int len;
@@ -83,7 +81,7 @@ public class HMAC {
             System.out.println("HMAC file created!");
     }
 
-    public static void verifyHMAC(boolean notRuntime) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+    private static void verifyHMAC(boolean notRuntime) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         //Restore the original key
         SecretKey restoredKey = restoreKey();
 

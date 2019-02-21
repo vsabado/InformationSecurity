@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class RSA2048 {
-    public static void makeStoreKeys() throws IOException, NoSuchAlgorithmException {
+    private static void makeStoreKeys() throws IOException, NoSuchAlgorithmException {
         KeyPairGenerator pairGen = KeyPairGenerator.getInstance("RSA");
         pairGen.initialize(2048);
         KeyPair keyPair = pairGen.genKeyPair();
@@ -19,35 +19,35 @@ public class RSA2048 {
         System.out.println("Created and stored a public and a private key");
     }
 
-    public static PrivateKey restorePrivate() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    private static PrivateKey restorePrivate() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] bytes = Files.readAllBytes(Paths.get("outputRSA/privkey.key"));
         PKCS8EncodedKeySpec k = new PKCS8EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePrivate(k);
     }
 
-    public static PublicKey restorePublic() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+    private static PublicKey restorePublic() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
         byte[] bytes = Files.readAllBytes(Paths.get("outputRSA/pubkey.pub"));
         X509EncodedKeySpec k = new X509EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePublic(k);
     }
 
-    public static byte[] encrypt(String m) throws Exception {
+    private static byte[] encrypt(String m) throws Exception {
         PublicKey pubKey = restorePublic();
         Cipher cip = Cipher.getInstance("RSA");
         cip.init(Cipher.ENCRYPT_MODE, pubKey);
         return cip.doFinal(m.getBytes());
     }
 
-    public static byte[] decrypt(byte[] encrypted) throws Exception {
+    private static byte[] decrypt(byte[] encrypted) throws Exception {
         PrivateKey privKey = restorePrivate();
         Cipher cip = Cipher.getInstance("RSA");
         cip.init(Cipher.DECRYPT_MODE, privKey);
         return cip.doFinal(encrypted);
     }
 
-    public static void encryptCmd(String m) throws Exception {
+    private static void encryptCmd(String m) throws Exception {
         PublicKey pubKey = restorePublic();
         System.out.println("Message to encrypt: " + m);
         byte[] p = encrypt(m);
