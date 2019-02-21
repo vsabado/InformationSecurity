@@ -10,15 +10,10 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class RSA2048 {
-
-    public static KeyPair makeKeyPair() throws NoSuchAlgorithmException {
+    public static void makeStoreKeys() throws IOException, NoSuchAlgorithmException {
         KeyPairGenerator pairGen = KeyPairGenerator.getInstance("RSA");
         pairGen.initialize(2048);
-        return pairGen.genKeyPair();
-    }
-
-    public static void makeStoreKeys() throws IOException, NoSuchAlgorithmException {
-        KeyPair keyPair = makeKeyPair();
+        KeyPair keyPair = pairGen.genKeyPair();
         new FileOutputStream("outputRSA/privkey.key").write(keyPair.getPrivate().getEncoded());
         new FileOutputStream("outputRSA/pubkey.pub").write(keyPair.getPublic().getEncoded());
         System.out.println("Created and stored a public and a private key");
@@ -57,6 +52,7 @@ public class RSA2048 {
         System.out.println("Message to encrypt: " + m);
         byte[] p = encrypt(m);
         System.out.println("Encryption complete: " + Arrays.toString(p));
+        System.out.println("Note: encryption message converted to string");
         System.out.println("Saved to ctext.txt");
 
         FileOutputStream fos = new FileOutputStream("outputRSA/ctext.txt"); //create an outputRSA folder!
@@ -126,11 +122,6 @@ public class RSA2048 {
                     loop = false;
                     break;
             }
-
         }
-
-
     }
-
-
 }

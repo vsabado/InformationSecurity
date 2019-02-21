@@ -24,30 +24,28 @@ public class HMAC {
         return new SecretKeySpec(Files.readAllBytes(Paths.get("outputHMACKey/key")), "HMACSHA256");
     }
 
-
     public static byte[] generateMessage(SecretKey key) throws NoSuchAlgorithmException, InvalidKeyException {
-        Mac mac = Mac.getInstance("HMACSHA256");
-        mac.init(key);
-        byte[] macb = new byte[0];
+        Mac m = Mac.getInstance("HMACSHA256");
+        m.init(key);
+        byte[] mb = new byte[0];
         try (FileInputStream in = new FileInputStream("outputHMACKey/m")) {
-            macb = processFile(mac, in);
-//            System.out.println("test " + ": " + Arrays.toString(macb));
+            mb = process(m, in);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return macb;
+        return mb;
     }
 
-    static private final byte[] processFile(Mac mac, InputStream in)
+    static private final byte[] process(Mac m, InputStream in)
             throws java.io.IOException {
-        byte[] ibuf = new byte[1024];
+        byte[] i = new byte[1024];
         int len;
-        while ((len = in.read(ibuf)) != -1) {
-            mac.update(ibuf, 0, len);
+        while ((len = in.read(i)) != -1) {
+            m.update(i, 0, len);
         }
-        return mac.doFinal();
+        return m.doFinal();
     }
 
     public static void createHmacKeyMessage(boolean notRuntime) throws NoSuchAlgorithmException, IOException, InvalidKeyException {
@@ -134,7 +132,7 @@ public class HMAC {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 HMAC-Key-Message creations in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
+                    System.out.println("Average in ms: " + (float) ((finish - start) / 1000000) / 100);
                     break;
                 case 'V':
                     start = System.nanoTime();
@@ -143,7 +141,7 @@ public class HMAC {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 verifications in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
+                    System.out.println("Average in ms: " + (float) ((finish - start) / 1000000) / 100);
                     break;
                 case 'c':
                     createHmacKeyMessage(true);
