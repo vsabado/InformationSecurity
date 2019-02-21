@@ -104,7 +104,7 @@ public class RSASig {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 encryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + ((finish - start) / 1000000) / 100);
+                    System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
                     break;
                 case 'D':
                     confirm = encrypt(m, pubKey);
@@ -114,7 +114,7 @@ public class RSASig {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 decryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + ((finish - start) / 1000000) / 100);
+                    System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
                     break;
                 case 'e':
                     encryptCmd(pubKey, m, privKey);

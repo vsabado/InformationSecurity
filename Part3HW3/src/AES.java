@@ -13,12 +13,9 @@ public class AES {
 
     public static String encrypt(String string) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES"), new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8)));
             return Base64.getEncoder().encodeToString(cipher.doFinal(string.getBytes()));
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -27,10 +24,8 @@ public class AES {
 
     public static String decrypt(String encryptedMessage) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES"), new IvParameterSpec(initVector.getBytes(StandardCharsets.UTF_8)));
             return new String(cipher.doFinal(Base64.getDecoder().decode(encryptedMessage)));
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,7 +100,7 @@ public class AES {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 encryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + ((finish - start) / 1000000) / 100);
+                    System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
                     break;
                 case 'D':
                     start = System.nanoTime();
@@ -115,7 +110,7 @@ public class AES {
                     }
                     finish = System.nanoTime();
                     System.out.println("100 decryptions in ms: " + ((finish - start) / 1000000));
-                    System.out.println("Average in ms: " + ((finish - start) / 1000000) / 100);
+                    System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
                     break;
                 case 'e':
                     encryptCmd(m);
