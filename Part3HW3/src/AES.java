@@ -42,7 +42,8 @@ public class AES {
     public static void encryptCmd(String m) {
         System.out.println("Message to encrypt: " + m);
         String encryptedString = encrypt(m);
-        System.out.println("Encryption complete");
+        System.out.println("Encryption complete: " + encryptedString);
+        System.out.println("Saved to ctext.txt");
 
         PrintStream ps = null;
         try {

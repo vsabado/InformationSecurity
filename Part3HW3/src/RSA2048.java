@@ -27,8 +27,10 @@ public class RSA2048 {
 
     public static void encryptCmd(PublicKey pubKey, String m) throws Exception {
         System.out.println("Message to encrypt: " + m);
-        System.out.println("Encryption complete");
         byte[] p = encrypt(pubKey, m);
+        System.out.println("Encryption complete: " + p);
+        System.out.println("Saved to ctext.txt");
+
 
         FileOutputStream fos = new FileOutputStream("outputRSA/ctext.txt"); //create an outputRSA folder!
         fos.write(p);

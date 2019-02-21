@@ -43,7 +43,7 @@ public class RSASig {
 
         PrintStream ps = null;
         try {
-            ps = new PrintStream("outputRSASig/ctext.txt");
+            ps = new PrintStream("outputRSASig/sigtext.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -53,11 +53,15 @@ public class RSASig {
         String signed = sign(m, privKey);
         ps.print(signed);
         System.out.println("Encryption complete");
+        System.out.println("Encrypted message: " + p);
+        System.out.println("Signature: " + signed);
+        System.out.println("Saved to sigtext.txt");
     }
 
     private static void decryptCmd(PrivateKey privKey, PublicKey pubKey) throws Exception {
-        String message = Files.readAllLines(Paths.get("outputRSASig/ctext.txt")).get(0);
-        String signature =  Files.readAllLines(Paths.get("outputRSASig/ctext.txt")).get(1);
+        System.out.println("Decrypting from sigtext.txt");
+        String message = Files.readAllLines(Paths.get("outputRSASig/sigtext.txt")).get(0);
+        String signature =  Files.readAllLines(Paths.get("outputRSASig/sigtext.txt")).get(1);
         String decryptedMessage = decrypt(message, privKey);
         System.out.println("Decrypted message is: " + decryptedMessage);
         System.out.println("Signiture verified? : " + verify(decryptedMessage, signature, pubKey));
