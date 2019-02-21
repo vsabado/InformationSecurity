@@ -1,7 +1,11 @@
 import javax.crypto.Cipher;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -13,21 +17,45 @@ public class RSA2048 {
         return pairGen.genKeyPair();
     }
 
-    public static byte[] encrypt(PublicKey pubKey, String m) throws Exception {
+    public static void makeStoreKeys() throws IOException, NoSuchAlgorithmException {
+        KeyPair keyPair = makeKeyPair();
+        new FileOutputStream("outputRSA/privkey.key").write(keyPair.getPrivate().getEncoded());
+        new FileOutputStream("outputRSA/pubkey.pub").write(keyPair.getPublic().getEncoded());
+        System.out.println("Created and stored a public and a private key");
+    }
+
+    public static PrivateKey restorePrivate() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] bytes = Files.readAllBytes(Paths.get("outputRSA/privkey.key"));
+        PKCS8EncodedKeySpec k = new PKCS8EncodedKeySpec(bytes);
+        KeyFactory factory = KeyFactory.getInstance("RSA");
+        return factory.generatePrivate(k);
+    }
+
+    public static PublicKey restorePublic() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+        byte[] bytes = Files.readAllBytes(Paths.get("outputRSA/pubkey.pub"));
+        X509EncodedKeySpec k = new X509EncodedKeySpec(bytes);
+        KeyFactory factory = KeyFactory.getInstance("RSA");
+        return factory.generatePublic(k);
+    }
+
+    public static byte[] encrypt(String m) throws Exception {
+        PublicKey pubKey = restorePublic();
         Cipher cip = Cipher.getInstance("RSA");
         cip.init(Cipher.ENCRYPT_MODE, pubKey);
         return cip.doFinal(m.getBytes());
     }
 
-    public static byte[] decrypt(PrivateKey privKey, byte[] encrypted) throws Exception {
+    public static byte[] decrypt(byte[] encrypted) throws Exception {
+        PrivateKey privKey = restorePrivate();
         Cipher cip = Cipher.getInstance("RSA");
         cip.init(Cipher.DECRYPT_MODE, privKey);
         return cip.doFinal(encrypted);
     }
 
-    public static void encryptCmd(PublicKey pubKey, String m) throws Exception {
+    public static void encryptCmd(String m) throws Exception {
+        PublicKey pubKey = restorePublic();
         System.out.println("Message to encrypt: " + m);
-        byte[] p = encrypt(pubKey, m);
+        byte[] p = encrypt(m);
         System.out.println("Encryption complete: " + Arrays.toString(p));
         System.out.println("Saved to ctext.txt");
 
@@ -36,17 +64,17 @@ public class RSA2048 {
         fos.close();
     }
 
-    private static void decryptCmd(PrivateKey privKey) throws Exception {
+    private static void decryptCmd() throws Exception {
+        PrivateKey privKey = restorePrivate();
         System.out.println("Decrypting message");
-        System.out.println("Message decrypted: " + new String(decrypt(privKey, Files.readAllBytes(new File("outputRSA/ctext.txt").toPath())))); //create an outputRSA folder!
+        System.out.println("Message decrypted: " + new String(decrypt(Files.readAllBytes(new File("outputRSA/ctext.txt").toPath())))); //create an outputRSA folder!
     }
 
     public static void main(String[] args) throws Exception {
         System.out.println("Running RSA2048");
         // generate public and private keys
-        KeyPair keyPair = makeKeyPair();
-        PublicKey pubKey = keyPair.getPublic();
-        PrivateKey privKey = keyPair.getPrivate();
+        makeStoreKeys();
+
 
         System.out.println("What's your message?");
         Scanner scan = new Scanner(System.in);
@@ -72,27 +100,27 @@ public class RSA2048 {
                 case 'E':
                     start = System.nanoTime();
                     for (int i = 0; i < 100; i++) {
-                        confirm = encrypt(pubKey, m);
+                        confirm = encrypt(m);
                     }
                     finish = System.nanoTime();
                     System.out.println("100 encryptions in ms: " + ((finish - start) / 1000000));
                     System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
                     break;
                 case 'D':
-                    confirm = encrypt(pubKey, m);
+                    confirm = encrypt(m);
                     start = System.nanoTime();
                     for (int i = 0; i < 100; i++) {
-                        byte[] test = decrypt(privKey, confirm);
+                        byte[] test = decrypt(confirm);
                     }
                     finish = System.nanoTime();
                     System.out.println("100 decryptions in ms: " + ((finish - start) / 1000000));
                     System.out.println("Average in ms: " + (float)((finish - start) / 1000000) / 100);
                     break;
                 case 'e':
-                    encryptCmd(pubKey, m);
+                    encryptCmd(m);
                     break;
                 case 'd':
-                    decryptCmd(privKey);
+                    decryptCmd();
                     break;
                 case 'q':
                     loop = false;

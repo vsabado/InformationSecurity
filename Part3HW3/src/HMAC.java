@@ -3,16 +3,11 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.KeySpec;
 import java.util.Arrays;
-import java.util.Base64;
-import java.security.SecureRandom;
 import java.util.Scanner;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
 import javax.crypto.Mac;
-import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class HMAC {
