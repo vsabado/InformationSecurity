@@ -40,9 +40,21 @@ public class PasswordGenerator {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        ps.println("[" + username + "," + salt + "," + securePassword +"]");
+        ps.println("[" + username + "," + salt + "," + securePassword + "]");
         System.out.println("Password generated and stored into pwd.txt");
-        System.out.println("[" + username + "," + salt + "," + securePassword +"]");
+        System.out.println("[" + username + "," + salt + "," + securePassword + "]");
+    }
+
+    private static String ensureLimitationOnPassword() {
+        System.out.println("What is your desired password?");
+        Scanner scan = new Scanner(System.in);
+        String password = scan.nextLine();
+
+        if (!(2 < password.length() && password.length() < 5)) {
+            System.out.println("Password must have a length between 2 to 5!");
+            ensureLimitationOnPassword();
+        }
+        return password;
     }
 
 
@@ -51,9 +63,7 @@ public class PasswordGenerator {
         System.out.println("What's your username?");
         Scanner scan = new Scanner(System.in);
         String username = scan.nextLine();
-        System.out.println("What is your desire password?");
-        String password = scan.nextLine();
-
+        String password = ensureLimitationOnPassword();
         //User interactions
         boolean loop = true;
         while (loop) {
@@ -73,8 +83,7 @@ public class PasswordGenerator {
                     username = scan.nextLine();
                     break;
                 case 't':
-                    System.out.println("What is your desired password?");
-                    password = scan.nextLine();
+                    password = ensureLimitationOnPassword();
                     break;
                 case 'y':
                     saveIntoText(username, password);
