@@ -10,13 +10,9 @@ def run_cracker(length, letters, numbers, symbols, salt, pwd):
     for i in brute(length=length, letters=letters, numbers=numbers, symbols=symbols):
         count += 1
         if hashlib.sha256(salt.encode() + i.encode()).hexdigest() == pwd:
-            end = time.time()
-            print('Password found to be: ' + i)
-            print('Attempts: ')
-            print(count)
-            print('Time: ')
-            print(end - start)
-            continue
+            finish = time.time()
+            print('Password found to be: ' + i + ', Attempts: ' + str(count) + ", Time : " + str(finish - start))
+            break
 
 
 def analyze_pass(index):
